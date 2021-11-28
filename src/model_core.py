@@ -2,11 +2,25 @@ import cv2
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.nn import Parameter
 import torchvision.transforms as transforms
 
 from components.attention import ChannelAttention, SpatialAttention, DualCrossModalAttention
 from components.srm_conv import SRMConv2d_simple, SRMConv2d_Separate
 from networks.xception import TransferModel
+
+class AngleSimpleLinear(nn.Module):
+    """Computes cos of angles between input vectors and weights vectors"""
+    def __init__(self, in_features, out_features):
+        super(AngleSimpleLinear, self).__init__()
+        self.in_features = in_features
+        self.out_features = out_features
+        self.weight = Parameter(torch.Tensor(in_features, out_features))
+        self.weight.data.uniform_(-1, 1).renorm_(2, 1, 1e-5).mul_(1e5)
+
+    def forward(self, x):
+        cos_theta = F.normalize(x, dim=1).mm(F.normalize(self.weight, dim=0))
+        return cos_theta.clamp(-1, 1)
 
 
 class SRMPixelAttention(nn.Module):
@@ -86,6 +100,7 @@ class Two_Stream_Net(nn.Module):
         self.dual_cma1 = DualCrossModalAttention(in_dim=728, ret_att=False)
 
         self.fusion = FeatureFusionModule()
+        self.anglelinear = AngleSimpleLinear(2048, 2)
 
         self.att_dic = {}
 
@@ -143,21 +158,22 @@ class Two_Stream_Net(nn.Module):
         fea: (B, 1024) the flattened features before the last FC
         att_map: srm spatial attention map
         '''
-        out, fea = self.classifier(self.features(x))
+        _, fea = self.classifier(self.features(x))
+        out = self.anglelinear(fea)
 
-        return out, fea, self.att_map
+        return out
     
 if __name__ == '__main__':
-    t_list = [transforms.ToTensor()]
-    composed_transform = transforms.Compose(t_list)
+    # t_list = [transforms.ToTensor()]
+    # composed_transform = transforms.Compose(t_list)
 
-    img = cv2.imread('out.jpg')
-    img = cv2.resize(img, (256, 256))
-    image = composed_transform(img)
-    image = image.unsqueeze(0)
+    # img = cv2.imread('out.jpg')
+    # img = cv2.resize(img, (256, 256))
+    # image = composed_transform(img)
+    # image = image.unsqueeze(0)
 
     model = Two_Stream_Net()
     dummy = torch.rand((1,3,256,256))
-    out = model(image)
-    print(out[0])
+    out = model(dummy)
+    print(out)
     

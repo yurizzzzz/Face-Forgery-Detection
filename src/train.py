@@ -49,7 +49,9 @@ if __name__ == '__main__':
     while epoch < 10:
         count = 0
         total_loss = 0
+        correct = 0
         tbar = tqdm(TrainData)
+        total = 0
 
         for batch_idx, (input_img, img_label) in enumerate(tbar):
             count = count + 1
@@ -58,21 +60,23 @@ if __name__ == '__main__':
             input_img = input_img.to(device)
             img_label = img_label.to(device)
 
-            _, output_fea, _ = model(input_img)
+            outputs= model(input_img)
             optimizer.zero_grad()
 
-            angel = am_softmax.AngleSimpleLinear(2048, 2)
             amloss = am_softmax.AMSoftmaxLoss()
-            # print(output_fea.shape)
             img_label = img_label.squeeze()
-            # print(img_label.shape)
-            loss = amloss(angel(output_fea), img_label)
+            loss = amloss(outputs, img_label)
             loss.backward()
             optimizer.step()
+
             total_loss = total_loss + loss
             avg_loss = total_loss / count
+            _, predict = torch.max(outputs.data, 1)
+            correct += predict.eq(img_label.data).cpu().sum()
+            total = total + img_label.size(0)
+            correct_per = 100.0 * correct / total
 
-            desc = 'Training  : Epoch %d, Avg. Loss = %.5f' % (epoch, avg_loss)
+            desc = 'Training  : Epoch %d, AvgLoss = %.4f, AC = %.4f' % (epoch, avg_loss, correct_per)
             tbar.set_description(desc)
             tbar.update()
         
