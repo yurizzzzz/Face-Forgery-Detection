@@ -1,5 +1,6 @@
 import sys
 import os
+
 if __name__ == '__main__':
     sys.path.append(os.path.dirname(sys.path[0]))
 
@@ -32,20 +33,20 @@ if __name__ == '__main__':
             value = int(value)
             label_dict.update({key: value})
 
-    train_list = [file for file in os.listdir('/media/HardDisk_new/wx/Dataset/deepface/image/train/') if file.endswith('.jpg')]
+    train_list = [file for file in os.listdir('/media/HardDisk_new/wx/Dataset/deepface/image/train/') if
+                  file.endswith('.jpg')]
     TrainData = torch.utils.data.DataLoader(dataset.LoadData(train_list, label_dict, mode='train'),
                                             batch_size=16,
                                             shuffle=True,
                                             num_workers=16,
                                             drop_last=False)
-    
 
     model = model_core.Two_Stream_Net()
     model = model.cuda()
     optimizer = optim.Adam(model.parameters(), lr=0.0002, betas=(0.9, 0.999))
 
-    epoch = 0 
-    
+    epoch = 0
+
     while epoch < 10:
         count = 0
         total_loss = 0
@@ -60,7 +61,7 @@ if __name__ == '__main__':
             input_img = input_img.to(device)
             img_label = img_label.to(device)
 
-            outputs= model(input_img)
+            outputs = model(input_img)
             optimizer.zero_grad()
 
             amloss = am_softmax.AMSoftmaxLoss()
@@ -79,10 +80,8 @@ if __name__ == '__main__':
             desc = 'Training  : Epoch %d, AvgLoss = %.4f, AC = %.4f' % (epoch, avg_loss, correct_per)
             tbar.set_description(desc)
             tbar.update()
-        
+
         model.eval()
         savename = '/home/fzw/face-forgery-detection/checkpoint/checkpoint' + '_' + str(epoch) + '.tar'
         torch.save({'epoch': epoch, 'state_dict': model.state_dict()}, savename)
         epoch = epoch + 1
-
-        
