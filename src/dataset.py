@@ -42,7 +42,7 @@ class LoadData(Dataset):
 
         if self.mode == 'train':
             face_detect = dlib.get_frontal_face_detector()
-            img = cv2.imread('/media/HardDisk_new/wx/Dataset/deepface/image/train/' + input_img)
+            img = cv2.imread('/home/fzw/face/image/train/' + input_img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = face_detect(gray, 1)
             if len(faces) != 0:
@@ -59,6 +59,27 @@ class LoadData(Dataset):
                 cropped_face = composed_transform(cropped_face)
                 label = self.label_dict[input_img]
                 label = torch.LongTensor([label])
+        
+        if self.mode == 'val':
+            face_detect = dlib.get_frontal_face_detector()
+            img = cv2.imread('/home/fzw/face/image/val/' + input_img)
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            faces = face_detect(gray, 1)
+            if len(faces) != 0:
+                face = faces[0]
+                x, y, size = get_boundingbox(face, 1024, 1024)
+                cropped_face = img[y:y+size, x:x+size]
+                cropped_face = cv2.resize(cropped_face, (256, 256))
+                cropped_face = composed_transform(cropped_face)
+
+                label = self.label_dict[input_img]
+                label = torch.LongTensor([label])
+            else:
+                cropped_face = cv2.resize(img, (256, 256))
+                cropped_face = composed_transform(cropped_face)
+                label = self.label_dict[input_img]
+                label = torch.LongTensor([label])
+
 
         return cropped_face, label
 
