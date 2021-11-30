@@ -1,7 +1,5 @@
 import sys
 import os
-
-
 import cv2
 import dlib
 import torch
