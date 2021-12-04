@@ -2,7 +2,7 @@ import csv
 import sys
 import os
 
-fzwFile = open("./predict2.csv", "r")
+fzwFile = open("./predict3.csv", "r")
 wxFile = open("./submission.csv", "r")
 reader1 = csv.reader(fzwFile)
 reader2 = csv.reader(wxFile)
@@ -39,7 +39,7 @@ for i in range(8076):
 f = open('difference.csv', 'w', encoding='utf-8', newline="")
 csv_write = csv.writer(f)
 csv_write.writerow(["filename", "fzw", "wx"])
-print(dif_list)
+print(len(dif_list))
 for i in range(len(dif_list)):
     filename = 'test_' + str(dif_list[i]) + '.jpg'
     file_label1 = label_list1[dif_list[i]]
