@@ -761,7 +761,7 @@ test_758.jpg	0
 test_759.jpg	0
 test_760.jpg	0
 test_761.jpg	0
-test_762.jpg	0
+test_762.jpg	1
 test_763.jpg	0
 test_764.jpg	0
 test_765.jpg	0
@@ -1157,7 +1157,7 @@ test_1154.jpg	0
 test_1155.jpg	0
 test_1156.jpg	0
 test_1157.jpg	0
-test_1158.jpg	0
+test_1158.jpg	1
 test_1159.jpg	0
 test_1160.jpg	0
 test_1161.jpg	0
@@ -1919,7 +1919,7 @@ test_1916.jpg	0
 test_1917.jpg	0
 test_1918.jpg	0
 test_1919.jpg	0
-test_1920.jpg	1
+test_1920.jpg	0
 test_1921.jpg	0
 test_1922.jpg	0
 test_1923.jpg	0
@@ -2379,7 +2379,7 @@ test_2376.jpg	0
 test_2377.jpg	0
 test_2378.jpg	0
 test_2379.jpg	1
-test_2380.jpg	0
+test_2380.jpg	1
 test_2381.jpg	0
 test_2382.jpg	0
 test_2383.jpg	0
@@ -3666,7 +3666,7 @@ test_3663.jpg	1
 test_3664.jpg	1
 test_3665.jpg	0
 test_3666.jpg	0
-test_3667.jpg	0
+test_3667.jpg	1
 test_3668.jpg	0
 test_3669.jpg	0
 test_3670.jpg	0
@@ -4713,7 +4713,7 @@ test_4710.jpg	0
 test_4711.jpg	0
 test_4712.jpg	0
 test_4713.jpg	0
-test_4714.jpg	0
+test_4714.jpg	1
 test_4715.jpg	0
 test_4716.jpg	1
 test_4717.jpg	0
@@ -4906,7 +4906,7 @@ test_4903.jpg	0
 test_4904.jpg	0
 test_4905.jpg	1
 test_4906.jpg	0
-test_4907.jpg	0
+test_4907.jpg	1
 test_4908.jpg	0
 test_4909.jpg	0
 test_4910.jpg	0
@@ -4995,7 +4995,7 @@ test_4992.jpg	0
 test_4993.jpg	0
 test_4994.jpg	0
 test_4995.jpg	0
-test_4996.jpg	0
+test_4996.jpg	1
 test_4997.jpg	0
 test_4998.jpg	1
 test_4999.jpg	0
@@ -5411,7 +5411,7 @@ test_5408.jpg	0
 test_5409.jpg	0
 test_5410.jpg	0
 test_5411.jpg	0
-test_5412.jpg	0
+test_5412.jpg	1
 test_5413.jpg	0
 test_5414.jpg	0
 test_5415.jpg	1
@@ -5575,7 +5575,7 @@ test_5572.jpg	0
 test_5573.jpg	0
 test_5574.jpg	1
 test_5575.jpg	0
-test_5576.jpg	0
+test_5576.jpg	1
 test_5577.jpg	0
 test_5578.jpg	1
 test_5579.jpg	1
@@ -6153,7 +6153,7 @@ test_6150.jpg	1
 test_6151.jpg	0
 test_6152.jpg	0
 test_6153.jpg	1
-test_6154.jpg	0
+test_6154.jpg	1
 test_6155.jpg	0
 test_6156.jpg	0
 test_6157.jpg	0
@@ -7277,7 +7277,7 @@ test_7274.jpg	0
 test_7275.jpg	1
 test_7276.jpg	0
 test_7277.jpg	0
-test_7278.jpg	0
+test_7278.jpg	1
 test_7279.jpg	0
 test_7280.jpg	0
 test_7281.jpg	0
