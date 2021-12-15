@@ -10,29 +10,45 @@ import torchvision.transforms as transforms
 import torch.optim as optim
 from torchvision import utils as vutils
 
-from tqdm import tqdm
 import csv
 import dataset
+import argparse
 import model_core
 from loss import am_softmax
 
-torch.cuda.set_device(2)
+def input_args():
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--cuda_id", type=int, default=0,
+                        help="The GPU ID")
+
+    parser.add_argument("--test_dir", type=str, default='/home/fzw/face/image/test/',
+                        help="The testdata path")
+
+    return parser.parse_args()
+
 
 if __name__ == '__main__':
-    device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
+    args = input_args()
+
+    torch.cuda.set_device(args.cuda_id)
+    device = torch.device("cuda:%d" % (args.cuda_id) if torch.cuda.is_available() else "cpu")
 
     model = model_core.Two_Stream_Net()
     model = model.cuda()
 
-    model_state_dict = torch.load('/home/fzw/face-forgery-detection-val/checkpoint/checkpoint_9.tar', map_location='cuda:2')['state_dict']
-    model.load_state_dict(model_state_dict)
+    # model_state_dict = torch.load('/home/fzw/face-forgery-detection-val/checkpoint/checkpoint_9.tar', map_location='cuda:2')['state_dict']
+    # model.load_state_dict(model_state_dict)
 
-    test_list = [file for file in os.listdir('/home/fzw/face/image/test/') if file.endswith('.jpg')]
+    test_list = [file for file in os.listdir(args.test_dir) if file.endswith('.jpg')]
     test_list = tqdm(test_list)
 
     t_list = [transforms.ToTensor()]
     composed_transform = transforms.Compose(t_list)
 
+    folder = os.path.exists('./predict.csv')
+    if not folder:
+        os.makedirs('./predict.csv')
     f = open('predict.csv', 'w', encoding='utf-8', newline="")
     csv_write = csv.writer(f)
     csv_write.writerow(["fname", "label"])
@@ -42,7 +58,7 @@ if __name__ == '__main__':
     for filename in test_list:
         model.eval()
         face_detect = dlib.get_frontal_face_detector()
-        img = cv2.imread('/home/fzw/face/image/test/' + filename)
+        img = cv2.imread(args.test_dir + '/' + filename)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_detect(gray, 1)
         if len(faces) != 0:
