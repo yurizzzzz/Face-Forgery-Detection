@@ -1,6 +1,7 @@
 import sys
 import os
 import cv2
+from torch.serialization import load
 import dlib
 import torch
 import numpy as np
@@ -24,6 +25,9 @@ def input_args():
 
     parser.add_argument("--test_dir", type=str, default='/home/fzw/face/image/test/',
                         help="The testdata path")
+    
+    parser.add_argument("--pre_model", type=str, default='home/fzw/face-forgery-detection-val/checkpoint/checkpoint_9.tar',
+                        help="the path of pretraining model")
 
     return parser.parse_args()
 
@@ -37,8 +41,8 @@ if __name__ == '__main__':
     model = model_core.Two_Stream_Net()
     model = model.cuda()
 
-    # model_state_dict = torch.load('/home/fzw/face-forgery-detection-val/checkpoint/checkpoint_9.tar', map_location='cuda:2')['state_dict']
-    # model.load_state_dict(model_state_dict)
+    model_state_dict = torch.load(args.pre_model, map_location='cuda:0')['state_dict']
+    model.load_state_dict(model_state_dict)
 
     test_list = [file for file in os.listdir(args.test_dir) if file.endswith('.jpg')]
     test_list = tqdm(test_list)

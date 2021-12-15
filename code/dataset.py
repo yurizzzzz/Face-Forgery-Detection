@@ -1,3 +1,4 @@
+from sys import argv
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset
 from PIL import Image
@@ -29,10 +30,11 @@ def get_boundingbox(face, width, height, scale=1.3, minsize=None):
 
 
 class LoadData(Dataset):
-    def __init__(self, img, label_dict, mode='train'):
+    def __init__(self, arg, img, label_dict, mode='train'):
         self.img = img
         self.label_dict = label_dict
         self.mode = mode
+        self.args = arg
 
     def __getitem__(self, item):
         input_img = self.img[item]
@@ -42,7 +44,7 @@ class LoadData(Dataset):
 
         if self.mode == 'train':
             face_detect = dlib.get_frontal_face_detector()
-            img = cv2.imread('/home/fzw/face/image/train/' + input_img)
+            img = cv2.imread(self.args.train_dir + '/' + input_img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = face_detect(gray, 1)
             if len(faces) != 0:
@@ -62,7 +64,7 @@ class LoadData(Dataset):
         
         if self.mode == 'val':
             face_detect = dlib.get_frontal_face_detector()
-            img = cv2.imread('/home/fzw/face/image/val/' + input_img)
+            img = cv2.imread(self.args.val_dir + '/' + input_img)
             gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
             faces = face_detect(gray, 1)
             if len(faces) != 0:
