@@ -41,13 +41,20 @@ The overall network is shown as follows  ![Model](https://z3.ax1x.com/2021/11/30
 - For the test, run the test.py and set the args
 
 ```
-python test.py cuda_id 0 test_dir /home/train pre_model /home/model
+python test.py --cuda_id 0 --test_dir /home/train --pre_model /home/model
 ```
 
 - For the train, run the train.py and set the args
 
 ```
-python train.py cuda_id 0 train_label /home/label train_dir /home/train val_dir /home/val save_model /home/result
+python train.py --cuda_id 0 --train_label /home/label --train_dir /home/train --val_dir /home/val --save_model /home/result
+```
+
+- Note
+
+```
+The size of training images is 256x256
+The label of training images is a xxx.csv file(including all images' label: filename and label)
 ```
 
 # Reference
